@@ -98,8 +98,11 @@ router
    //GET /users/:id/comments
    router.get("/:id/comments", ( req, res, next) =>{
     const userId = req.params.id;
-    const userComments = comments.filter(comment => comment.userId == userId);
-
+    const {postId} = req.query;
+    let userComments = comments.filter(comment => comment.userId == userId);
+    if(postId){
+      userComments = comments.filter(comment => comment.postId == postId);
+    }
     if(userComments.length > 0) {
       res.json(userComments);
     }else {
