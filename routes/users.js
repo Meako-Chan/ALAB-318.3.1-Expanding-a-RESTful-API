@@ -5,7 +5,6 @@ const users = require("../data/users");
 const posts = require("../data/posts")
 const error = require("../utilities/error");
 
-console.log(posts)
 
 router
   .route("/")

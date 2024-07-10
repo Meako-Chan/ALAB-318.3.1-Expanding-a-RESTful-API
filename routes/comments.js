@@ -6,6 +6,14 @@ const error = require("../utilities/error");
 
 // GET /comments route
 router.get("/", (req, res) =>{
+    const {userId, postId} = req.query;
+    let userComments = comments
+    if(userId){
+        userComments = userComments.filter(c => c.userId == userId);
+    }
+    if(postId){
+        userComments = userComments.filter(c => c.postId == postId);
+    }
     const links = [
         {
             href: "/comments",
@@ -19,7 +27,7 @@ router.get("/", (req, res) =>{
         },
     ];
 
-    res.json({comments, links});
+    res.json({userComments, links});
 });
 
 //Post Comments Route
