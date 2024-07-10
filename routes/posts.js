@@ -6,7 +6,15 @@ const error = require("../utilities/error");
 
 router
   .route("/")
-  .get((req, res) => {
+  .get((req, res, next) => {
+    const userID = parseInt(req.query.userId);
+    if (userID){
+      const userPosts = posts.filter(post => post.userId === userID);
+      if(userPosts.length === 0){
+        return next(error(404, `User has no posts with id: ${userID}`));
+      }
+      return res.json(userPosts);
+    }
     const links = [
       {
         href: "posts/:id",
@@ -76,5 +84,6 @@ router
     if (post) res.json(post);
     else next();
   });
+
 
 module.exports = router;

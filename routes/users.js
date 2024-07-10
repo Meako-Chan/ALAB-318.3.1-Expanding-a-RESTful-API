@@ -86,7 +86,7 @@ router
 
   //New Route to get posts by user with id
   router.get("/:id/posts", (req, res, next) =>{
-    const userId = req.params.id;
+    const userId = parseInt(req.params.id);
     const userPosts = posts.filter(post => post.userId === userId);
 
     if(userPosts.length === 0){
