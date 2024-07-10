@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const posts = require("../data/posts");
+const comments = require("../data/comments");
 const error = require("../utilities/error");
 
 router
@@ -83,6 +84,18 @@ router
 
     if (post) res.json(post);
     else next();
+  });
+
+  //GET /posts/:id/comments
+  router.get("/:id/comments", ( req, res, next) =>{
+    const postId = req.params.id;
+    const postComments = comments.filter(comment => comment.postId == postId);
+
+    if(postComments.length > 0) {
+      res.json(postComments);
+    }else {
+      next(error(404,"No comments found for this post ID."));
+    }
   });
 
 

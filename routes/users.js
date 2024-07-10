@@ -3,6 +3,7 @@ const router = express.Router();
 
 const users = require("../data/users");
 const posts = require("../data/posts")
+const comments = require("../data/comments")
 const error = require("../utilities/error");
 
 
@@ -92,6 +93,18 @@ router
       return next(error(404, "User has no posts"));
     }
     res.json(userPosts);
+  });
+
+   //GET /users/:id/comments
+   router.get("/:id/comments", ( req, res, next) =>{
+    const userId = req.params.id;
+    const userComments = comments.filter(comment => comment.userId == userId);
+
+    if(userComments.length > 0) {
+      res.json(userComments);
+    }else {
+      next(error(404,"No comments found for this user ID."));
+    }
   });
 
 module.exports = router;
