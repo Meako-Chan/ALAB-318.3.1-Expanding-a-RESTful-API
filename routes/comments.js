@@ -22,6 +22,7 @@ router.get("/", (req, res) =>{
     res.json({comments, links});
 });
 
+//Post Comments Route
 router.post("/", (req, res, next) =>{
     const {userId, postId, body} = req.body;
     if(userId && postId && body){
@@ -35,4 +36,48 @@ router.post("/", (req, res, next) =>{
     }
 });
 
+/// GET comments/:id route
+router.get("/:id", (req, res, next) =>{
+    const comment = comments.find(c => c.id == req.params.id);
+    if(comment){
+        res.json(comment);
+    }else{
+        next(error(404, "Comment not found"));
+    }
+});
+
+// PATCH comments/:id route
+router.patch("/:id", (req, res, next) => {
+    const comment = comments.find((c, i) => {
+      if (c.id == req.params.id) {
+        if (req.body.body) {
+          comments[i].body = req.body.body;
+          return true;
+        } else {
+          next(error(400, "Body is Required"));
+          return false;
+        }
+      }
+    });
+  
+    if (comment) {
+      res.json(comment);
+    } else {
+      next(error(404, "Comment Not Found"));
+    }
+  });
+
+  //DELETE comments/:id route
+  router.delete("/:id", (req, res, next) =>{
+    const comment = comments.find((c, i) => {
+        if (c.id == req.params.id) {
+          comments.splice(i, 1);
+          return true;
+        }
+      });
+  
+      if (comment) res.json(comment);
+      else next(error(404, "Comment Not Found"));
+  });
+    
 module.exports = router;
